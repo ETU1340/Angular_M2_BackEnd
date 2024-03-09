@@ -1,2 +1,1 @@
-# AngularM2
-Apprendre Angular en M2
+# AngularMBDSMadagascar2024
