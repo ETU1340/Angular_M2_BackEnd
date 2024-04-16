@@ -1,15 +1,16 @@
-let express = require('express');
+let express = require("express");
+let expressListRoutes = require("express-list-routes");
 let app = express();
-let bodyParser = require('body-parser');
-let assignment = require('./routes/assignments');
-let teacher = require('./routes/teacher.route');
+let bodyParser = require("body-parser");
+let assignmentRts = require("./routes/assignments.routes");
+let teacherRts = require("./routes/teacher.routes");
+let studentsRts = require("./routes/students.routes");
+let mongoose = require("mongoose");
 
-let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 // mongoose.set('debug', true);
-// remplacer toute cette chaine par l'URI de connexion à votre propre base dans le cloud s
-//const uri = 'mongodb+srv://noumsfinoana:mdpprom10@cluster0.gw4zu4y.mongodb.net/assignments?retryWrites=true&w=majority&appName=Cluster0';
-const uri = 'mongodb+srv://labstudy830:AqFmwwGWI7WP75DR@cluster0.kxj5gal.mongodb.net/assignments?retryWrites=true&w=majority&appName=Cluster0';
+const uri =
+  "mongodb+srv://labstudy830:AqFmwwGWI7WP75DR@cluster0.kxj5gal.mongodb.net/assignments?retryWrites=true&w=majority&appName=Cluster0";
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -19,16 +20,20 @@ const options = {
 mongoose.connect(uri, options).then(
   () => {
     console.log("Connecté à la base MongoDB assignments dans le cloud !");
+    // insertStudents();
   },
   (err) => {
-    console.log('Erreur de connexion: ', err);
+    console.log("Erreur de connexion: ", err);
   }
 );
 
 // Pour accepter les connexions cross-domain (CORS)
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   next();
 });
@@ -40,26 +45,30 @@ app.use(bodyParser.json());
 let port = process.env.PORT || 8010;
 
 // les routes
-const prefix = '/api';
+const prefix = "/api";
 
 // http://serveur..../assignments
 app
-  .route(prefix + '/assignments')
-  .post(assignment.postAssignment)
-  .put(assignment.updateAssignment)
-  .get(assignment.getAssignments);
+  .route(prefix + "/assignments")
+  .post(assignmentRts.postAssignment)
+  .put(assignmentRts.updateAssignment)
+  .get(assignmentRts.getAssignments);
 
 app
-  .route(prefix + '/assignments/:id')
-  .get(assignment.getAssignment)
-  .delete(assignment.deleteAssignment);
+  .route(prefix + "/assignments/:id")
+  .get(assignmentRts.getAssignment)
+  .delete(assignmentRts.deleteAssignment);
 
-  app
-  .route(prefix + '/teachers')
-  .post(teacher.checkConnection);
+app.route(prefix + "/teachers").post(teacherRts.checkConnection);
 
-// On démarre le serveur
-app.listen(port, "0.0.0.0");
-console.log('Serveur démarré sur http://localhost:' + port);
+app.route(prefix + "/students").get(studentsRts.getStudents);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+  console.log("api is deployed");
+  expressListRoutes(app);
+});
+
+console.log("Serveur démarré sur http://localhost:" + port);
 
 module.exports = app;
