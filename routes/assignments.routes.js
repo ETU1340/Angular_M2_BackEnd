@@ -38,13 +38,6 @@ function getAssignment(req, res) {
     }
     res.json(assignment);
   });
-
-  /*
-    Assignment.findOne({id: assignmentId}, (err, assignment) =>{
-        if(err){res.send(err)}
-        res.json(assignment);
-    })
-    */
 }
 
 // Ajout d'un assignment (POST)
