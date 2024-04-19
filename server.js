@@ -47,14 +47,21 @@ app
   .route(prefix + '/assignments')
   .post(assignment.postAssignment)
   .put(assignment.updateAssignment)
-  .get(assignment.getAssignments);
+  .get(assignment.getAssignments)
+
+app
+  .route(prefix + '/assignmentNotReturned')
+  .get(assignment.getAssignmentNotReturned)
+app
+  .route(prefix + '/assignmentReturned')
+  .get(assignment.getAssignmentReturned);
 
 app
   .route(prefix + '/assignments/:id')
   .get(assignment.getAssignment)
   .delete(assignment.deleteAssignment);
 
-  app
+app
   .route(prefix + '/teachers')
   .post(teacher.checkConnection);
 

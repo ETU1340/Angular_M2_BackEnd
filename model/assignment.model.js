@@ -5,6 +5,8 @@ let AssignmentSchema = Schema({
     id: Number,
     dateDeRendu: Date,
     nom: String,
+    note: Number,
+    remark:String,
     rendu: Boolean
 });
 
