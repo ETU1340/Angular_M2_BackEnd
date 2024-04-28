@@ -12,7 +12,7 @@ function getAssignments(req, res) {
 
 // Récupérer tous les assignments (GET)
 function getAssignmentNotReturned(req, res) {
-  Assignment.find({"rendu":false},(err, assignments) => {
+  Assignment.find({ rendu: false }, (err, assignments) => {
     if (err) {
       res.send(err);
     }
@@ -21,7 +21,7 @@ function getAssignmentNotReturned(req, res) {
 }
 
 function getAssignmentReturned(req, res) {
-  Assignment.find({"rendu":true},(err, assignments) => {
+  Assignment.find({ rendu: true }, (err, assignments) => {
     if (err) {
       res.send(err);
     }
@@ -98,6 +98,5 @@ module.exports = {
   getAssignmentNotReturned,
   getAssignmentReturned,
   updateAssignment,
-  deleteAssignment
-
+  deleteAssignment,
 };

@@ -5,7 +5,9 @@ let bodyParser = require("body-parser");
 let assignmentRts = require("./routes/assignments.routes");
 let teacherRts = require("./routes/teacher.routes");
 let studentsRts = require("./routes/students.routes");
+let subjectRts = require("./routes/subjects.routes");
 let mongoose = require("mongoose");
+const { initTeacher, initSubject } = require("./init");
 
 mongoose.Promise = global.Promise;
 // mongoose.set('debug', true);
@@ -49,16 +51,16 @@ const prefix = "/api";
 
 // http://serveur..../assignments
 app
-  .route(prefix + '/assignments')
+  .route(prefix + "/assignments")
   .post(assignmentRts.postAssignment)
   .put(assignmentRts.updateAssignment)
-  .get(assignmentRts.getAssignments)
+  .get(assignmentRts.getAssignments);
 
 app
-  .route(prefix + '/assignmentNotReturned')
-  .get(assignmentRts.getAssignmentNotReturned)
+  .route(prefix + "/assignmentNotReturned")
+  .get(assignmentRts.getAssignmentNotReturned);
 app
-  .route(prefix + '/assignmentReturned')
+  .route(prefix + "/assignmentReturned")
   .get(assignmentRts.getAssignmentReturned);
 
 app
@@ -69,10 +71,9 @@ app
 app.route(prefix + "/teachers").post(teacherRts.checkConnection);
 
 app.route(prefix + "/students").get(studentsRts.getStudents);
-
+app.route(prefix + "/subjects").get(subjectRts.getSubjects);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
-  console.log("api is deployed");
   expressListRoutes(app);
 });
 

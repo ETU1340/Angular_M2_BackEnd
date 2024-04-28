@@ -16,7 +16,6 @@ async function insertStudents() {
 async function getStudents(req, res) {
   try {
     const students = await Student.find();
-    console.log(students);
     return res.status(200).json(students);
   } catch (error) {
     console.error("Error fetching students:", error);

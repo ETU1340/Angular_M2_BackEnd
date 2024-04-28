@@ -130,7 +130,6 @@ let StudentSchema = new Schema({
     type: String,
     required: true,
   },
-
   picture: {
     large: {
       type: String,
