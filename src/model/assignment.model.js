@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const Student = require("./student.model");
 let AssignmentSchema = new Schema({
   dateRendu: Date,
+  rendu: Boolean,
   name: String,
   student: {
     _id: String,
