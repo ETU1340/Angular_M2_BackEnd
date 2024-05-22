@@ -4,6 +4,7 @@ const Student = require("./student.model");
 let AssignmentSchema = new Schema({
   dateRendu: Date,
   name: String,
+  isHanded: Boolean,
   student: {
     _id: String,
     name: String,

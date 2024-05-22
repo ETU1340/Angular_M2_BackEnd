@@ -1,13 +1,46 @@
 let Assignment = require("../model/assignment.model");
 
 // Récupérer tous les assignments (GET)
-function getAssignments(req, res) {
-  Assignment.find((err, assignments) => {
-    if (err) {
-      res.send(err);
-    }
-    res.send(assignments);
-  });
+async function getAssignments(req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    const startIndex = (page - 1) * limit;
+
+    const totalDocs = await Assignment.countDocuments().exec();
+    const totalPages = Math.ceil(totalDocs / limit);
+
+    const aggregateQuery = Assignment.aggregate([
+      // Your aggregation stages here
+      // Example:
+      // { $match: { ... }},
+      // { $group: { ... }},
+    ]);
+
+    const assignments = await aggregateQuery
+      .skip(startIndex)
+      .limit(limit)
+      .exec();
+
+    const nextPage = page < totalPages ? page + 1 : null;
+    const prevPage = page > 1 ? page - 1 : null;
+
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
+    res.json({
+      assignments: assignments,
+      totalDocs: totalDocs,
+      totalPages: totalPages,
+      nextPage: nextPage,
+      prevPage: prevPage,
+      hasNextPage: hasNextPage,
+      hasPrevPage: hasPrevPage,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 }
 
 // Récupérer tous les assignments (GET)
@@ -80,12 +113,12 @@ function updateAssignment(req, res) {
 // suppression d'un assignment (DELETE)
 // l'id est bien le _id de mongoDB
 function deleteAssignment(req, res) {
-  Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
-    if (err) {
-      res.send(err);
-    }
-    res.json({ message: `${assignment.nom} deleted` });
-  });
+  // Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
+  //   if (err) {
+  //     res.send(err);
+  //   }
+  //   res.json({ message: `${assignment.nom} deleted` });
+  // });
 }
 
 module.exports = {
