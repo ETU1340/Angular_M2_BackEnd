@@ -1,6 +1,5 @@
 let Assignment = require("../model/assignment.model");
 
-// Récupérer tous les assignments (GET)
 async function getAssignments(req, res) {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -43,9 +42,8 @@ async function getAssignments(req, res) {
   }
 }
 
-// Récupérer tous les assignments (GET)
 function getAssignmentNotReturned(req, res) {
-  Assignment.find({ rendu: false }, (err, assignments) => {
+  Assignment.find({ isHanded: false }, (err, assignments) => {
     if (err) {
       res.send(err);
     }
@@ -62,7 +60,6 @@ function getAssignmentReturned(req, res) {
   });
 }
 
-// Récupérer un assignment par son id (GET)
 function getAssignment(req, res) {
   let assignmentId = req.params.id;
   Assignment.findById(assignmentId, (err, assignment) => {
@@ -73,7 +70,6 @@ function getAssignment(req, res) {
   });
 }
 
-// Ajout d'un assignment (POST)
 function postAssignment(req, res) {
   console.log(req.body);
   let assignment = new Assignment(req.body);
@@ -89,9 +85,7 @@ function postAssignment(req, res) {
   });
 }
 
-// Update d'un assignment (PUT)
 function updateAssignment(req, res) {
-  console.log("UPDATE recu assignment : ");
   console.log(req.body);
   Assignment.findByIdAndUpdate(
     req.body._id,
@@ -104,21 +98,17 @@ function updateAssignment(req, res) {
       } else {
         res.json({ message: "updated" });
       }
-
-      // console.log('updated ', assignment)
     }
   );
 }
 
-// suppression d'un assignment (DELETE)
-// l'id est bien le _id de mongoDB
 function deleteAssignment(req, res) {
-  // Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
-  //   if (err) {
-  //     res.send(err);
-  //   }
-  //   res.json({ message: `${assignment.nom} deleted` });
-  // });
+  Assignment.findByIdAndRemove(req.params.id, (err, assignment) => {
+    if (err) {
+      res.send(err);
+    }
+    res.json({ message: `${assignment.nom} deleted` });
+  });
 }
 
 module.exports = {
