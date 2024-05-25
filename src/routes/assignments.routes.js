@@ -52,7 +52,7 @@ function getAssignmentNotReturned(req, res) {
 }
 
 function getAssignmentReturned(req, res) {
-  Assignment.find({ rendu: true }, (err, assignments) => {
+  Assignment.find({ isHanded: true }, (err, assignments) => {
     if (err) {
       res.send(err);
     }
@@ -110,6 +110,42 @@ function deleteAssignment(req, res) {
     res.json({ message: `${assignment.nom} deleted` });
   });
 }
+async function getStat(req, res) {
+  const results = await Assignment.aggregate([
+    {
+      $facet: {
+        noMark: [{ $match: { mark: { $exists: false } } }, { $count: "count" }],
+        withMark: [
+          { $match: { mark: { $exists: true }, isHanded: false } },
+          { $count: "count" },
+        ],
+        markNotHanded: [
+          { $match: { mark: { $exists: true }, isHanded: true } },
+          { $count: "count" },
+        ],
+      },
+    },
+  ]);
+
+  const noMarkCount = results[0].noMark.length ? results[0].noMark[0].count : 0;
+  const withMarkCount = results[0].withMark.length
+    ? results[0].withMark[0].count
+    : 0;
+  const markNotHandedCount = results[0].markNotHanded.length
+    ? results[0].markNotHanded[0].count
+    : 0;
+
+  console.log(`Documents with no mark: ${noMarkCount}`);
+  console.log(`Documents with a mark: ${withMarkCount}`);
+  console.log(
+    `Documents with a mark but handed is false: ${markNotHandedCount}`
+  );
+  return res.status(200).json({
+    noMark: noMarkCount,
+    withMark: withMarkCount,
+    markedHanded: markNotHandedCount,
+  });
+}
 
 module.exports = {
   getAssignments,
@@ -119,4 +155,5 @@ module.exports = {
   getAssignmentReturned,
   updateAssignment,
   deleteAssignment,
+  getStat,
 };

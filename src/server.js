@@ -72,6 +72,8 @@ app.route(prefix + "/teachers").post(teacherRts.checkConnection);
 
 app.route(prefix + "/students").get(studentsRts.getStudents);
 app.route(prefix + "/subjects").get(subjectRts.getSubjects);
+
+app.route(prefix + "/stat").get(assignmentRts.getStat);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   expressListRoutes(app);
