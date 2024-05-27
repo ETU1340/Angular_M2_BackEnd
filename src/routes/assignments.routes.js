@@ -43,21 +43,71 @@ async function getAssignments(req, res) {
 }
 
 function getAssignmentNotReturned(req, res) {
-  Assignment.find({ isHanded: false }, (err, assignments) => {
-    if (err) {
-      res.send(err);
-    }
-    res.send(assignments);
-  });
+  console.log('ato2');
+  const page = parseInt(req.query.page) || 1;
+
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+
+  Assignment.find({ isHanded: false })
+    .skip(skip)
+    .limit(limit)
+    .exec((err, assignments) => {
+      console.log(assignments);
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      Assignment.countDocuments({ isHanded: false }, (err, count) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        const totalPages =  Math.ceil(count / limit);
+        const nextPage = page < totalPages ? page + 1 : null;
+        const hasNextPage = page < totalPages;
+        res.send({
+          assignments:assignments,
+          totalPages: Math.ceil(count / limit),
+          nextPage:nextPage,
+          hasNextPage:hasNextPage,
+          currentPage: page,
+        });
+      });
+    });
 }
 
 function getAssignmentReturned(req, res) {
-  Assignment.find({ isHanded: true }, (err, assignments) => {
-    if (err) {
-      res.send(err);
-    }
-    res.send(assignments);
-  });
+  console.log('ato1');
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  Assignment.find({ isHanded: true })
+    .skip(skip)
+    .limit(limit)
+    .exec((err, assignments) => {
+      console.log(assignments);
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      Assignment.countDocuments({ isHanded: true }, (err, count) => {
+        if (err) {
+          return res.status(500).send(err);
+        }
+        const totalPages =  Math.ceil(count / limit);
+        const nextPage = page < totalPages ? page + 1 : null;
+        const hasNextPage = page < totalPages;
+        res.send({
+          assignments:assignments,
+          totalPages: Math.ceil(count / limit),
+          nextPage:nextPage,
+          hasNextPage:hasNextPage,
+          currentPage: page,
+        });
+      });
+    });
 }
 
 function getAssignment(req, res) {
