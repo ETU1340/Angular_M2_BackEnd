@@ -43,7 +43,6 @@ async function getAssignments(req, res) {
 }
 
 function getAssignmentNotReturned(req, res) {
-  console.log('ato2');
   const page = parseInt(req.query.page) || 1;
 
   const limit = parseInt(req.query.limit) || 10;
@@ -54,7 +53,6 @@ function getAssignmentNotReturned(req, res) {
     .skip(skip)
     .limit(limit)
     .exec((err, assignments) => {
-      console.log(assignments);
       if (err) {
         return res.status(500).send(err);
       }
@@ -78,7 +76,6 @@ function getAssignmentNotReturned(req, res) {
 }
 
 function getAssignmentReturned(req, res) {
-  console.log('ato1');
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
   const skip = (page - 1) * limit;
@@ -87,7 +84,6 @@ function getAssignmentReturned(req, res) {
     .skip(skip)
     .limit(limit)
     .exec((err, assignments) => {
-      console.log(assignments);
       if (err) {
         return res.status(500).send(err);
       }
@@ -121,11 +117,7 @@ function getAssignment(req, res) {
 }
 
 function postAssignment(req, res) {
-  console.log(req.body);
   let assignment = new Assignment(req.body);
-
-  console.log("POST assignment reçu :");
-  console.log(assignment);
 
   assignment.save((err) => {
     if (err) {
@@ -136,7 +128,6 @@ function postAssignment(req, res) {
 }
 
 function updateAssignment(req, res) {
-  console.log(req.body);
   Assignment.findByIdAndUpdate(
     req.body._id,
     req.body,
@@ -160,6 +151,28 @@ function deleteAssignment(req, res) {
     res.json({ message: `${assignment.nom} deleted` });
   });
 }
+
+
+async function searchAssignmentReturned(req, res) {
+  const searchTerm = req.query.name;
+  if (!searchTerm) {
+
+    return res.status(400).send('Un terme de recherche est requis');
+  }
+  const regex = new RegExp(searchTerm, 'i'); // 'i' pour insensible à la casse
+  const results = await Assignment.find({ name: { $regex: regex },isHanded: true });
+
+  return res.status(200).json(results);
+}
+
+async function searchAssignmentNotReturned(req, res) {
+  const searchTerm = req.query.name;
+  const regex = new RegExp(searchTerm, 'i'); // 'i' pour insensible à la casse
+  const results = await Assignment.find({ name: { $regex: regex },isHanded: false });
+
+  return res.status(200).json(results);
+}
+
 async function getStat(req, res) {
   const results = await Assignment.aggregate([
     {
@@ -169,10 +182,10 @@ async function getStat(req, res) {
           { $match: { mark: { $exists: true }, isHanded: false } },
           { $count: "count" },
         ],
-        markNotHanded: [
+        markHanded: [
           { $match: { mark: { $exists: true }, isHanded: true } },
           { $count: "count" },
-        ],
+        ]
       },
     },
   ]);
@@ -181,22 +194,21 @@ async function getStat(req, res) {
   const withMarkCount = results[0].withMark.length
     ? results[0].withMark[0].count
     : 0;
-  const markNotHandedCount = results[0].markNotHanded.length
-    ? results[0].markNotHanded[0].count
+  const markHandedCount = results[0].markHanded.length
+    ? results[0].markHanded[0].count
     : 0;
 
   console.log(`Documents with no mark: ${noMarkCount}`);
   console.log(`Documents with a mark: ${withMarkCount}`);
   console.log(
-    `Documents with a mark but handed is false: ${markNotHandedCount}`
+    `Documents with a mark and handed is true: ${markHandedCount}`
   );
   return res.status(200).json({
     noMark: noMarkCount,
     withMark: withMarkCount,
-    markedHanded: markNotHandedCount,
+    markedHanded: markHandedCount,
   });
 }
-
 module.exports = {
   getAssignments,
   postAssignment,
@@ -206,4 +218,6 @@ module.exports = {
   updateAssignment,
   deleteAssignment,
   getStat,
+  searchAssignmentReturned,
+  searchAssignmentNotReturned
 };
