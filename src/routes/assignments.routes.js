@@ -159,7 +159,8 @@ async function searchAssignmentReturned(req, res) {
 
     return res.status(400).send('Un terme de recherche est requis');
   }
-  const regex = new RegExp(searchTerm, 'i'); // 'i' pour insensible à la casse
+  console.log(searchTerm);
+  const regex = new RegExp('^' + searchTerm, 'i'); // 'i' pour insensible à la casse
   const results = await Assignment.find({ name: { $regex: regex },isHanded: true });
 
   return res.status(200).json(results);
@@ -167,7 +168,7 @@ async function searchAssignmentReturned(req, res) {
 
 async function searchAssignmentNotReturned(req, res) {
   const searchTerm = req.query.name;
-  const regex = new RegExp(searchTerm, 'i'); // 'i' pour insensible à la casse
+  const regex = new RegExp('^' + searchTerm, 'i'); // 'i' pour insensible à la casse
   const results = await Assignment.find({ name: { $regex: regex },isHanded: false });
 
   return res.status(200).json(results);
