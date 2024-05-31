@@ -9,9 +9,8 @@
   - [Utilisation](#utilisation)
   - [Fonctionnalités](#fonctionnalités)
   - [Contributeurs](#contributeurs)
-    - [ETU1340 (noumsfinoana@gmail.com)](#etu1340-noumsfinoanagmailcom)
-    - [ace34TT (tafinasoa35@gmail.com)](#ace34tt-tafinasoa35gmailcom)
-  - [Améliorations Possibles](#améliorations-possibles)
+    - [VALIMBAVAKA Nomena Finoana - 57 (ETU1340)](#valimbavaka-nomena-finoana---57-etu1340)
+    - [Rabenandrasana 	Tafinasoa - 11 (ace34TT)](#rabenandrasana-tafinasoa---11-ace34tt)
 
 ## Introduction
 
@@ -23,12 +22,12 @@ Pour installer et exécuter ce projet localement :
 
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/ETU1340/Angular_M2_BackEnd.git
+   git clone https://github.com/ETU1340/Tp_angular_assignment_back_11_57.git
    ```
 
 2. Accédez au répertoire du projet :
    ```bash
-   cd Angular_M2_BackEnd
+   cd Tp_angular_assignment_back_11_57
    ```
 
 3. Installez les dépendances :
@@ -36,11 +35,13 @@ Pour installer et exécuter ce projet localement :
    npm install
    ```
 
-4. Configurez la base de données MongoDB et configurez la chaîne de connexion dans un fichier `.env`.
-
 5. Démarrez le serveur :
+
    ```bash
-   npm start
+   cd src
+   ```
+   ```bash
+   node server.js
    ```
 
 ## Utilisation
@@ -49,36 +50,25 @@ Une fois le serveur démarré, vous pouvez accéder aux points de terminaison de
 
 ## Fonctionnalités
 
-- **Opérations CRUD pour les Devoirs** : Créer, lire, mettre à jour et supprimer des devoirs.
-- **Défilement Infini** : Charger efficacement de grands ensembles de données avec le défilement infini.
-- **Fonctionnalité de Recherche** : Capacités de recherche améliorées pour les devoirs.
-- **Statistiques** : Générer des statistiques liées aux devoirs.
-- **Glisser-Déposer** : Fonctionnalité de glisser-déposer pour soumettre des devoirs.
-- **Intégration MongoDB** : Stocker et gérer les données en utilisant MongoDB.
+- **Opérations CRUD pour les Devoirs** 
+- **Défilement Infini** 
+- **Fonctionnalité de Recherche** 
+- **Statistiques**
+- **Glisser-Déposer**
+- **Intégration MongoDB**
 
 ## Contributeurs
 
-### ETU1340 (noumsfinoana@gmail.com)
+### VALIMBAVAKA Nomena Finoana - 57 (ETU1340)
 - **Commit Initial et Configuration** : Configuration initiale du projet et upload des fichiers.
-- **Gestion des Professeurs** : Création des classes pour gérer les professeurs.
+- **Gestion professeurs et éleves** : Creation des classes pour geré les professeurs et éleves
 - **Glisser-Déposer** : Ajout de la fonctionnalité de glisser-déposer pour les devoirs.
-- **Défilement Infini** : Implémentation du défilement infini et ajout de 1000 entrées de test.
+- **Défilement Infini** : Implémentation du défilement infini pour la gestion des 1000 données
 - **Fonctions de Recherche** : Création et amélioration des fonctionnalités de recherche pour les devoirs.
-- **Mise à Jour de la Classe Devoir** : Mise à jour de la classe devoir.
 
-### ace34TT (tafinasoa35@gmail.com)
-- **Gestion de l'API** : Gestion de l'API des étudiants et autres mises à jour initiales.
-- **Améliorations du Modèle** : Ajout d'éléments supplémentaires au modèle.
+### Rabenandrasana 	Tafinasoa - 11 (ace34TT)
+- **Opérations CRUD pour les Devoirs** : Créer, lire, mettre à jour et supprimer des devoirs.
+- **Gestion de l'API** : Gestion de l'API pour tous les modéles .
 - **Fonctionnalité de Statistiques** : Implémentation des fonctionnalités liées aux statistiques.
-- **Refactorisation du Code** : Refactorisation du code et mise à jour du schéma.
-- **Initialisation des Devoirs** : Initialisation des devoirs avec MongoDB.
-
-## Améliorations Possibles
-
-- **Authentification et Autorisation** : Implémenter l'authentification et l'autorisation des utilisateurs pour sécuriser les points de terminaison de l'API.
-- **Tests Complètes** : Ajouter des tests unitaires et des tests d'intégration pour garantir la fiabilité des services backend.
-- **Documentation de l'API** : Créer une documentation détaillée de l'API en utilisant des outils comme Swagger pour aider les développeurs à comprendre et utiliser l'API.
-- **Gestion des Erreurs** : Améliorer la gestion des erreurs et fournir des messages d'erreur plus descriptifs.
-- **Optimisation des Performances** : Optimiser les requêtes à la base de données et la logique backend pour améliorer les performances.
-
-Pour toute question ou contribution supplémentaire, n'hésitez pas à ouvrir une issue ou à soumettre une pull request. Merci d'utiliser notre service backend !
+- **Deployement** : Deployement du projet en ligne
+- **Generation des données** : Création et ajout de tous les données (assignments,teacher,students)
